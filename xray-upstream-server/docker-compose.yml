@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  xray:
+    image: ghcr.io/getimages/xray:1.6.0
+    container_name: xray_upstream
+    restart: always
+    environment:
+      - "XRAY_VMESS_AEAD_FORCED=false"
+      - "xray.vmess.aead.forced=false"
+    ports:
+      - ${VMESS_PORT:-2310}:2310
+      - ${VMESS_PORT:-2310}:2310/udp
+    volumes:
+      - ./config/:/etc/xray
+      - ./logs:/var/log/xray/

@@ -1,0 +1,49 @@
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 2310,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "<UPSTREAM-UUID>",
+            "alterId": 0,
+            "security": "auto"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "freedom"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "blackhole"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blackhole"
+      }
+    ]
+  }
+}
